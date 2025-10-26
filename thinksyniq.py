@@ -85,24 +85,6 @@ with tabs[3]:
     st.metric("Total Transactions", len(transactions_df))
 
 
-tabs = st.tabs(["Customers", "Products", "Transactions", "Reports"])
-
-with tabs[0]:
-    st.subheader("Customer Management")
-    st.write("Add, edit, or delete customer info here.")
-
-with tabs[1]:
-    st.subheader("Product Management")
-    st.write("Manage your product catalog here.")
-
-with tabs[2]:
-    st.subheader("Transactions")
-    st.write("Log and view transactions.")
-
-with tabs[3]:
-    st.subheader("Reports")
-    st.write("Analytics and performance reports will appear here.")
-
 # ===================== FLOATING CHATBOT =====================
 import streamlit.components.v1 as components
 
