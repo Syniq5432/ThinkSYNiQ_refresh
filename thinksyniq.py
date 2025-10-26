@@ -128,7 +128,9 @@ with tabs[1]:
     else:
         next_product_id = "PROD001"
 
+    # Input fields
     product_name = st.text_input("Product Name")
+    product_description = st.text_area("Description", placeholder="Enter a short product description...")
     product_price = st.number_input("Price ($)", min_value=0.0, step=0.01)
     product_stock = st.number_input("Stock Quantity", min_value=0, step=1)
 
@@ -136,6 +138,7 @@ with tabs[1]:
         new_row = {
             "Product_ID": next_product_id,
             "Product_Name": product_name,
+            "Description": product_description,
             "Price": product_price,
             "Stock": product_stock
         }
@@ -147,6 +150,7 @@ with tabs[1]:
         save_data(products_df, "data/products.csv")
         st.success(f"Product '{product_name}' added successfully!")
         st.rerun()
+
 
 
 # TRANSACTIONS TAB
