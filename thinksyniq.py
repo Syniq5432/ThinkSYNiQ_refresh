@@ -39,6 +39,52 @@ st.set_page_config(page_title="ThinkSYNiQ Dashboard", layout="wide")
 st.markdown("<h1 style='text-align:center;color:#1E3A8A;'>ThinkSYNiQ</h1>", unsafe_allow_html=True)
 st.markdown("<h3 style='text-align:center;color:#3B82F6;'>AI for Bosses</h3>", unsafe_allow_html=True)
 
+import pandas as pd
+from datetime import datetime
+
+# ======== LOAD DATA FROM CSV FILES ========
+def load_data(file_path):
+    try:
+        return pd.read_csv(file_path)
+    except FileNotFoundError:
+        return pd.DataFrame()
+
+customers_df = load_data("customers.csv")
+products_df = load_data("products.csv")
+transactions_df = load_data("transactions.csv")
+
+# ======== SAVE UPDATED DATA BACK TO CSV ========
+def save_data(df, file_path):
+    df.to_csv(file_path, index=False)
+
+# ======== ADMIN TABS ========
+st.sidebar.title("ThinkSYNiQ Admin Panel")
+tabs = st.tabs(["Customers", "Products", "Transactions", "Reports"])
+
+# CUSTOMERS TAB
+with tabs[0]:
+    st.subheader("Manage Customers")
+    st.dataframe(customers_df)
+
+# PRODUCTS TAB
+with tabs[1]:
+    st.subheader("Manage Products")
+    st.dataframe(products_df)
+
+# TRANSACTIONS TAB
+with tabs[2]:
+    st.subheader("Transaction History")
+    st.dataframe(transactions_df)
+
+# REPORTS TAB
+with tabs[3]:
+    st.subheader("Reports Overview")
+    total_revenue = transactions_df["total"].sum() if not transactions_df.empty else 0
+    st.metric("Total Revenue", f"${total_revenue:,.2f}")
+    st.metric("Total Customers", len(customers_df))
+    st.metric("Total Transactions", len(transactions_df))
+
+
 tabs = st.tabs(["Customers", "Products", "Transactions", "Reports"])
 
 with tabs[0]:
