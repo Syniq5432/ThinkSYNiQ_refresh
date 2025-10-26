@@ -73,7 +73,6 @@ with tabs[0]:
     st.write("### Add or Edit Customer")
 
 # --- Add or Edit Customer ---
-st.write("### Add or Edit Customer")
 
 # Auto-generate next Customer ID
 if not customers_df.empty and "Customer_ID" in customers_df.columns:
@@ -122,7 +121,7 @@ with tabs[2]:
 # REPORTS TAB
 with tabs[3]:
     st.subheader("Reports Overview")
-    total_revenue = transactions_df["total"].sum() if not transactions_df.empty else 0
+    total_revenue = transactions_df["Total"].sum() if "Total" in transactions_df.columns and not transactions_df.empty else 0
     st.metric("Total Revenue", f"${total_revenue:,.2f}")
     st.metric("Total Customers", len(customers_df))
     st.metric("Total Transactions", len(transactions_df))
