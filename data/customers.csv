@@ -1,3 +1,3 @@
-customer_id,customer_name,email,phone
+Customer_ID,Customer_Name,Email,Phone
 CUST001,Sue Dillon,sue@gmail.com,918-377-7876
 CUST002,Rob Gronk,gronk@gmail.com,714-894-8777  
