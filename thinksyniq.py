@@ -107,8 +107,47 @@ with tabs[0]:
 
 # PRODUCTS TAB
 with tabs[1]:
-    st.subheader("Manage Products")
+    st.subheader("Product Management")
+
+    # Load product data
+    products_df = pd.read_csv("data/products.csv")
+
+    st.write("### Existing Products")
     st.dataframe(products_df)
+
+    st.write("### Add or Edit Product")
+
+    # Auto-generate next Product ID
+    if not products_df.empty and "Product_ID" in products_df.columns:
+        last_id = products_df["Product_ID"].iloc[-1]
+        try:
+            last_num = int(last_id.replace("PROD", ""))
+        except:
+            last_num = len(products_df)
+        next_product_id = f"PROD{last_num + 1:03d}"
+    else:
+        next_product_id = "PROD001"
+
+    product_name = st.text_input("Product Name")
+    product_price = st.number_input("Price ($)", min_value=0.0, step=0.01)
+    product_stock = st.number_input("Stock Quantity", min_value=0, step=1)
+
+    if st.button("Add / Update Product"):
+        new_row = {
+            "Product_ID": next_product_id,
+            "Product_Name": product_name,
+            "Price": product_price,
+            "Stock": product_stock
+        }
+
+        if "Name" in products_df.columns:
+            products_df = products_df.drop(columns=["Name"])
+
+        products_df = pd.concat([products_df, pd.DataFrame([new_row])], ignore_index=True)
+        save_data(products_df, "data/products.csv")
+        st.success(f"Product '{product_name}' added successfully!")
+        st.rerun()
+
 
 # TRANSACTIONS TAB
 with tabs[2]:
