@@ -72,42 +72,37 @@ with tabs[0]:
 
     st.write("### Add or Edit Customer")
 
-# --- Add or Edit Customer ---
+    # Auto-generate next Customer ID
+    if not customers_df.empty and "Customer_ID" in customers_df.columns:
+        last_id = customers_df["Customer_ID"].iloc[-1]
+        try:
+            last_num = int(last_id.replace("CUST", ""))
+        except:
+            last_num = len(customers_df)
+        next_customer_id = f"CUST{last_num + 1:03d}"
+    else:
+        next_customer_id = "CUST001"
 
-# Auto-generate next Customer ID
-if not customers_df.empty and "Customer_ID" in customers_df.columns:
-    # Extract numeric part safely
-    last_id = customers_df["Customer_ID"].iloc[-1]
-    try:
-        last_num = int(last_id.replace("CUST", ""))
-    except:
-        last_num = len(customers_df)
-    next_customer_id = f"CUST{last_num + 1:03d}"
-else:
-    next_customer_id = "CUST001"
+    customer_name = st.text_input("Customer Name")
+    email = st.text_input("Email")
+    phone = st.text_input("Phone")
 
-st.text_input("Customer ID", value=next_customer_id, disabled=True, key="cust_id_auto")
-customer_name = st.text_input("Customer Name")
-email = st.text_input("Email")
-phone = st.text_input("Phone")
+    if st.button("Add / Update Customer"):
+        new_row = {
+            "Customer_ID": next_customer_id,
+            "Customer_Name": customer_name,
+            "Email": email,
+            "Phone": phone
+        }
 
-if st.button("Add / Update Customer"):
-    new_row = {
-        "Customer_ID": next_customer_id,
-        "Customer_Name": customer_name,
-        "Email": email,
-        "Phone": phone
-    }
+        if "Name" in customers_df.columns:
+            customers_df = customers_df.drop(columns=["Name"])
 
-    # Drop any stray "Name" column before saving
-    if "Name" in customers_df.columns:
-        customers_df = customers_df.drop(columns=["Name"])
+        customers_df = pd.concat([customers_df, pd.DataFrame([new_row])], ignore_index=True)
+        save_data(customers_df, "data/customers.csv")
+        st.success(f"Customer {customer_name} added successfully!")
+        st.rerun()
 
-    customers_df = pd.concat([customers_df, pd.DataFrame([new_row])], ignore_index=True)
-    save_data(customers_df, "data/customers.csv")
-
-    st.success(f"Customer {customer_name} added successfully!")
-    st.rerun()
 
 
 # PRODUCTS TAB
