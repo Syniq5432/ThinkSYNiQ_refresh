@@ -61,10 +61,39 @@ def save_data(df, file_path):
 st.sidebar.title("ThinkSYNiQ Admin Panel")
 tabs = st.tabs(["Customers", "Products", "Transactions", "Reports"])
 
-# CUSTOMERS TAB
 with tabs[0]:
-    st.subheader("Manage Customers")
+    st.subheader("Customer Management")
+
+    # Load customer data
+    customers_df = pd.read_csv("data/customers.csv")
+
+    st.write("### Existing Customers")
     st.dataframe(customers_df)
+
+    st.write("### Add or Edit Customer")
+
+    # Add/Edit Form
+    with st.form("customer_form", clear_on_submit=True):
+        cust_id = st.text_input("Customer ID")
+        name = st.text_input("Name")
+        email = st.text_input("Email")
+        phone = st.text_input("Phone")
+        submitted = st.form_submit_button("Save Customer")
+
+        if submitted:
+            # Update if exists, else append
+            if cust_id in customers_df["customer_id"].astype(str).values:
+                customers_df.loc[
+                    customers_df["customer_id"].astype(str) == cust_id,
+                    ["name", "email", "phone"],
+                ] = [name, email, phone]
+                st.success(f"✅ Updated customer {name}")
+            else:
+                new_row = {"customer_id": cust_id, "name": name, "email": email, "phone": phone}
+                customers_df = pd.concat([customers_df, pd.DataFrame([new_row])], ignore_index=True)
+                st.success(f"✅ Added new customer {name}")
+
+            customers_df.to_csv("data/customers.csv", index=False)
 
 # PRODUCTS TAB
 with tabs[1]:
