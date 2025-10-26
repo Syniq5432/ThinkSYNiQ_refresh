@@ -72,28 +72,42 @@ with tabs[0]:
 
     st.write("### Add or Edit Customer")
 
-    # Add/Edit Form
-    with st.form("customer_form", clear_on_submit=True):
-        cust_id = st.text_input("Customer ID")
-        name = st.text_input("Name")
-        email = st.text_input("Email")
-        phone = st.text_input("Phone")
-        submitted = st.form_submit_button("Save Customer")
+# --- Add or Edit Customer ---
+st.write("### Add or Edit Customer")
 
-        if submitted:
-            # Update if exists, else append
-            if cust_id in customers_df["customer_id"].astype(str).values:
-                customers_df.loc[
-                    customers_df["customer_id"].astype(str) == cust_id,
-                    ["name", "email", "phone"],
-                ] = [name, email, phone]
-                st.success(f"✅ Updated customer {name}")
-            else:
-                new_row = {"customer_id": cust_id, "name": name, "email": email, "phone": phone}
-                customers_df = pd.concat([customers_df, pd.DataFrame([new_row])], ignore_index=True)
-                st.success(f"✅ Added new customer {name}")
+# Auto-generate next Customer ID
+if not customers_df.empty and "Customer_ID" in customers_df.columns:
+    # Extract numeric part safely
+    last_id = customers_df["Customer_ID"].iloc[-1]
+    try:
+        last_num = int(last_id.replace("CUST", ""))
+    except:
+        last_num = len(customers_df)
+    next_customer_id = f"CUST{last_num + 1:03d}"
+else:
+    next_customer_id = "CUST001"
 
-            customers_df.to_csv("data/customers.csv", index=False)
+st.text_input("Customer ID", value=next_customer_id, disabled=True, key="cust_id_auto")
+customer_name = st.text_input("Customer Name")
+email = st.text_input("Email")
+phone = st.text_input("Phone")
+
+if st.button("Add / Update Customer"):
+    new_row = {
+        "Customer_ID": next_customer_id,
+        "Customer_Name": customer_name,
+        "Email": email,
+        "Phone": phone
+    }
+
+    # Drop any stray "Name" column before saving
+    if "Name" in customers_df.columns:
+        customers_df = customers_df.drop(columns=["Name"])
+
+    customers_df = pd.concat([customers_df, pd.DataFrame([new_row])], ignore_index=True)
+    save_data(customers_df, "data/customers.csv")
+    st.success(f"Customer {customer_name} added successfully!")
+
 
 # PRODUCTS TAB
 with tabs[1]:
