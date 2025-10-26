@@ -7,10 +7,30 @@ mode = st.radio("Select Mode", ["Admin", "Customer"], horizontal=True)
 if mode == "Admin":
     st.title("👑 ThinkSYNiQ Admin Dashboard")
 else:
-    st.title("💼 Welcome to ThinkSYNiQ Shop")
-    st.markdown("### Explore our featured products below!")
-    st.write("✨ Coming soon: full e-commerce integration with AI-powered recommendations.")
-    st.stop() # This hides admin content when in customer mode
+    st.markdown("<h1 style='text-align:center; color:#1E3A8A;'>💼 Welcome to ThinkSYNiQ</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align:center; font-size:18px; color:#555;'>AI for Bosses — Smart Tools for Smarter Business</p>", unsafe_allow_html=True)
+    st.markdown("---")
+
+    cols = st.columns(3)
+    products = [
+        {"name": "AI Chat Assistant", "price": "$49.99/mo", "desc": "Automate your customer service 24/7."},
+        {"name": "Analytics Dashboard", "price": "$79.99/mo", "desc": "Real-time data tracking and insights."},
+        {"name": "Smart Scheduler", "price": "$39.99/mo", "desc": "Streamline appointments with AI reminders."},
+    ]
+
+    for i, col in enumerate(cols):
+        with col:
+            st.markdown(f"<div style='background-color:#f3f4f6; border-radius:12px; padding:20px; text-align:center; box-shadow:0 2px 10px rgba(0,0,0,0.1);'>"
+                        f"<h3 style='color:#1E3A8A;'>{products[i]['name']}</h3>"
+                        f"<p style='font-size:18px; color:#333;'>{products[i]['price']}</p>"
+                        f"<p style='color:#555;'>{products[i]['desc']}</p>"
+                        f"<button style='background-color:#1E3A8A; color:white; border:none; border-radius:8px; padding:10px 20px;'>Learn More</button>"
+                        f"</div>", unsafe_allow_html=True)
+
+    st.markdown("---")
+    st.markdown("<p style='text-align:center; color:#999;'>© 2025 ThinkSYNiQ — Built with 💙 by Boss Lady Christie</p>", unsafe_allow_html=True)
+    st.stop()
+
 # =======================================================
 
 
