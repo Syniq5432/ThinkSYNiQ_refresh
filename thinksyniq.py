@@ -98,6 +98,9 @@ if st.button("Add / Update Customer"):
         "Email": email,
         "Phone": phone
     }
+    st.success(f"Customer {customer_name} added successfully!")
+    st.rerun() # auto-refresh (use st.experimental_rerun() if you're on Streamlit < 1.27)
+
 
     # Drop any stray "Name" column before saving
     if "Name" in customers_df.columns:
