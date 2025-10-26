@@ -1,6 +1,19 @@
 import streamlit as st
 import pandas as pd
 
+# ===================== MODE TOGGLE =====================
+mode = st.radio("Select Mode", ["Admin", "Customer"], horizontal=True)
+
+if mode == "Admin":
+    st.title("👑 ThinkSYNiQ Admin Dashboard")
+else:
+    st.title("💼 Welcome to ThinkSYNiQ Shop")
+    st.markdown("### Explore our featured products below!")
+    st.write("✨ Coming soon: full e-commerce integration with AI-powered recommendations.")
+    st.stop() # This hides admin content when in customer mode
+# =======================================================
+
+
 st.set_page_config(page_title="ThinkSYNiQ Dashboard", layout="wide")
 
 st.markdown("<h1 style='text-align:center;color:#1E3A8A;'>ThinkSYNiQ</h1>", unsafe_allow_html=True)
