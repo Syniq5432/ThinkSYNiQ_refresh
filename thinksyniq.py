@@ -103,12 +103,12 @@ if st.button("Add / Update Customer"):
 
 
     # Drop any stray "Name" column before saving
-    if "Name" in customers_df.columns:
-        customers_df = customers_df.drop(columns=["Name"])
+        if "Name" in customers_df.columns:
+            customers_df = customers_df.drop(columns=["Name"])
 
-    customers_df = pd.concat([customers_df, pd.DataFrame([new_row])], ignore_index=True)
-    save_data(customers_df, "data/customers.csv")
-    st.success(f"Customer {customer_name} added successfully!")
+        customers_df = pd.concat([customers_df, pd.DataFrame([new_row])], ignore_index=True)
+        save_data(customers_df, "data/customers.csv")
+        st.success(f"Customer {customer_name} added successfully!")
 
 
 # PRODUCTS TAB
