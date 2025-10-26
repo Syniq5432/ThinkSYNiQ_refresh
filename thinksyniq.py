@@ -49,9 +49,9 @@ def load_data(file_path):
     except FileNotFoundError:
         return pd.DataFrame()
 
-customers_df = load_data("customers.csv")
-products_df = load_data("products.csv")
-transactions_df = load_data("transactions.csv")
+customers_df = load_data("data/customers.csv")
+products_df = load_data("data/products.csv")
+transactions_df = load_data("data/transactions.csv")
 
 # ======== SAVE UPDATED DATA BACK TO CSV ========
 def save_data(df, file_path):
