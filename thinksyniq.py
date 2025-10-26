@@ -149,7 +149,14 @@ with tabs[1]:
         products_df = pd.concat([products_df, pd.DataFrame([new_row])], ignore_index=True)
         save_data(products_df, "data/products.csv")
         st.success(f"Product '{product_name}' added successfully!")
-        st.rerun()
+
+# Clear input fields after submission
+st.session_state["product_name"] = ""
+st.session_state["product_description"] = ""
+st.session_state["product_price"] = 0.0
+st.session_state["product_stock"] = 0
+
+st.rerun()
 
 
 
