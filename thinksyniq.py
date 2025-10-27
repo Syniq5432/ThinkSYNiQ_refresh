@@ -174,69 +174,80 @@ with tabs[3]:
     st.metric("Total Transactions", len(transactions_df))
 
 
-# ===================== FLOATING CHATBOT =====================
-import streamlit.components.v1 as components
+# --- ThinkSYNiQ Customer Chatbot (Floating, Navy Theme) ---
+import streamlit as st
 
-chatbot_html = """
-<style>
-#chatbox {
-  position: fixed;
-  bottom: 25px;
-  right: 25px;
-  width: 320px;
-  height: 420px;
-  background-color: #111827;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.3);
-  overflow: hidden;
-  font-family: 'Arial';
-}
-#chatheader {
-  background-color: #1E3A8A;
-  color: white;
-  text-align: center;
-  padding: 10px;
-  font-weight: bold;
-}
-#chatbody {
-  height: 330px;
-  overflow-y: auto;
-  padding: 10px;
-  color: white;
-}
-#chatinput {
-  width: 100%;
-  border: none;
-  outline: none;
-  padding: 10px;
-  box-sizing: border-box;
-  background-color: #f3f4f6;
-}
-</style>
+# Only show chatbot on Customer tab
+if tab == "Customer":
+    st.markdown(
+        """
+        <style>
+        /* Floating chat button */
+        #chat-button {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background-color: #0b1d39; /* Deep navy */
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
+            transition: 0.3s ease;
+        }
+        #chat-button:hover {
+            background-color: #153061; /* Slightly lighter navy */
+        }
 
-<div id="chatbox">
-  <div id="chatheader">💬 ThinkSYNiQ Assistant</div>
-  <div id="chatbody"></div>
-  <input id="chatinput" placeholder="Type your message..." />
-</div>
+        /* Chat window styling */
+        .chat-window {
+            position: fixed;
+            bottom: 100px;
+            right: 25px;
+            background-color: #0b1d39;
+            color: white;
+            width: 320px;
+            border-radius: 12px;
+            box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            display: none;
+        }
+        .chat-window.show {
+            display: block;
+        }
+        .chat-header {
+            font-weight: bold;
+            color: #f7c948; /* Gold accent */
+            margin-bottom: 8px;
+            text-align: center;
+        }
+        .chat-input {
+            width: 100%;
+            padding: 8px;
+            border-radius: 8px;
+            border: none;
+            margin-top: 10px;
+        }
+        </style>
 
-<script>
-const input = document.getElementById("chatinput");
-const body = document.getElementById("chatbody");
-input.addEventListener("keypress", async function(e){
-  if(e.key === "Enter" && input.value.trim() !== ""){
-    const userMsg = input.value;
-    body.innerHTML += `<p><b>You:</b> ${userMsg}</p>`;
-    input.value = "";
-    setTimeout(() => {
-      body.innerHTML += `<p><b>ThinkSYNiQ:</b> I'm still learning from Boss Lady Christie — but I'm ready to help!</p>`;
-      body.scrollTop = body.scrollHeight;
-    }, 600);
-  }
-});
-</script>
-"""
+        <button id="chat-button">💬</button>
+        <div class="chat-window" id="chat-window">
+            <div class="chat-header">ThinkSYNiQ Support</div>
+            <div id="chat-content">Hi there 👋<br>I'm still learning from Boss Lady Christie, but I'm ready to help!</div>
+            <input class="chat-input" id="chat-input" placeholder="Type your question here..."/>
+        </div>
 
-components.html(chatbot_html, height=500)
-# ===========================================================
+        <script>
+        const chatButton = document.getElementById("chat-button");
+        const chatWindow = document.getElementById("chat-window");
 
+        chatButton.addEventListener("click", function() {
+            chatWindow.classList.toggle("show");
+        });
+        </script>
+        """,
+        unsafe_allow_html=True,
+    )
