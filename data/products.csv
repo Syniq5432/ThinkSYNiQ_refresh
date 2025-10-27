@@ -2,5 +2,5 @@ Product_ID,Product_Name,Price,Description
 PROD001,AI Chat Assistant,49.99,Automate your customer service 24/7.
 PROD002,Analytics Dashboard,79.99,Real-time data tracking and insights.
 PROD003,Smart Scheduler,39.99,Streamline appointments with AI reminders.
-PROD004,SmartDesk Pro,Adjustable-height smart workstation with built-in charging ports,499.99
-PROD005,ThinkHub Mini,Compact sync device connecting multiple AI dashboards,299.00
+PROD004,SmartDesk Pro,499.99,Adjustable-height smart workstation with built-in charging ports
+PROD005,ThinkHub Mini,299.00,Compact sync device connecting multiple AI dashboards
