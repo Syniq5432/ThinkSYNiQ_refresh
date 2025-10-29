@@ -164,9 +164,9 @@ st.rerun()
 with tabs[2]:
     st.header("Add or Edit Transaction")
 
-    customers = pd.read_csv("data/Customers.csv")
-    products = pd.read_csv("data/Products.csv")
-    transactions = pd.read_csv("data/Transactions.csv")
+    customers = pd.read_csv("data/customers.csv")
+    products = pd.read_csv("data/products.csv")
+    transactions = pd.read_csv("data/transactions.csv")
 
     customer_names = customers["Customer Name"].tolist()
     product_names = products["Product Name"].tolist()
