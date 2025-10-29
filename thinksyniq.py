@@ -160,10 +160,41 @@ st.rerun()
 
 
 
-# TRANSACTIONS TAB
-with tabs[2]:
+# --- TRANSACTIONS TAB ---
+elif selected_tab == "Transactions":
+    st.header("Add or Edit Transaction")
+
+    customers = pd.read_csv("data/Customers.csv")
+    products = pd.read_csv("data/Products.csv")
+    transactions = pd.read_csv("data/Transactions.csv")
+
+    customer_names = customers["Customer Name"].tolist()
+    product_names = products["Product Name"].tolist()
+
+    # Form for adding a new transaction
+    with st.form("add_transaction_form"):
+        transaction_id = st.text_input("Transaction ID", f"TXN{len(transactions)+1:03d}")
+        date = st.date_input("Date")
+        customer = st.selectbox("Customer", customer_names)
+        product = st.selectbox("Product", product_names)
+        quantity = st.number_input("Quantity", min_value=1, value=1)
+
+        if st.form_submit_button("Add Transaction"):
+            product_price = float(products.loc[products["Product Name"] == product, "Price"].values[0])
+            total = quantity * product_price
+
+            new_txn = pd.DataFrame(
+                [[transaction_id, date, customer, product, product_price, quantity, total]],
+                columns=["Transaction ID", "Date", "Customer Name", "Product Name", "Price", "Quantity", "Total"]
+            )
+            transactions = pd.concat([transactions, new_txn], ignore_index=True)
+            transactions.to_csv("data/Transactions.csv", index=False)
+            st.success("Transaction added successfully!")
+
+    # Display Transaction History
     st.subheader("Transaction History")
-    st.dataframe(transactions_df)
+    st.dataframe(transactions)
+
 
 # REPORTS TAB
 with tabs[3]:
