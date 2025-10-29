@@ -203,13 +203,24 @@ with tabs[2]:
     st.dataframe(transactions)
 
 
-# REPORTS TAB
+# --- REPORTS TAB ---
 with tabs[3]:
-    st.subheader("Reports Overview")
-    total_revenue = transactions_df["Total"].sum() if "Total" in transactions_df.columns and not transactions_df.empty else 0
+    st.header("Reports Overview")
+
+    # Load necessary data
+    customers_df = pd.read_csv("data/customers.csv")
+    transactions_df = pd.read_csv("data/transactions.csv")
+
+    # Calculate totals safely
+    total_revenue = transactions_df["Total"].sum() if "Total" in transactions_df.columns else 0
+    total_customers = len(customers_df)
+    total_transactions = len(transactions_df)
+
+    # Display metrics
     st.metric("Total Revenue", f"${total_revenue:,.2f}")
-    st.metric("Total Customers", len(customers_df))
-    st.metric("Total Transactions", len(transactions_df))
+    st.metric("Total Customers", total_customers)
+    st.metric("Total Transactions", total_transactions)
+
 
 
 # --- ThinkSYNiQ Customer Chatbot (Floating, Navy Theme) ---
