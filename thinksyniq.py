@@ -161,7 +161,7 @@ st.rerun()
 
 
 # --- TRANSACTIONS TAB ---
-elif selected_tab == "Transactions":
+with tabs[2]:
     st.header("Add or Edit Transaction")
 
     customers = pd.read_csv("data/Customers.csv")
