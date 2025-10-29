@@ -209,7 +209,7 @@ with tabs[3]:
 import streamlit as st
 
 # Only show chatbot on Customer tab
-if tab == "Customer":
+with tabs[0]:
     st.markdown(
         """
         <style>
