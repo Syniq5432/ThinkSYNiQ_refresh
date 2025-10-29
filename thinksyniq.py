@@ -191,6 +191,13 @@ with tabs[2]:
             transactions.to_csv("data/Transactions.csv", index=False)
             st.success("Transaction added successfully!")
 
+            # Clear input fields after submission
+            st.session_state["Transaction ID"] = ""
+            st.session_state["Date"] = None
+            st.session_state["Customer"] = ""
+            st.session_state["Product"] = ""
+            st.session_state["Quantity"] = 1
+
     # Display Transaction History
     st.subheader("Transaction History")
     st.dataframe(transactions)
