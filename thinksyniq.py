@@ -191,25 +191,43 @@ with tabs[2]:
             transactions.to_csv("data/Transactions.csv", index=False)
             st.success("Transaction added successfully!")
 
+            # Clear input fields after submission
+            st.session_state["Transaction ID"] = ""
+            st.session_state["Date"] = None
+            st.session_state["Customer"] = ""
+            st.session_state["Product"] = ""
+            st.session_state["Quantity"] = 1
+
     # Display Transaction History
     st.subheader("Transaction History")
     st.dataframe(transactions)
 
 
-# REPORTS TAB
+# --- REPORTS TAB ---
 with tabs[3]:
-    st.subheader("Reports Overview")
-    total_revenue = transactions_df["Total"].sum() if "Total" in transactions_df.columns and not transactions_df.empty else 0
+    st.header("Reports Overview")
+
+    # Load necessary data
+    customers_df = pd.read_csv("data/customers.csv")
+    transactions_df = pd.read_csv("data/transactions.csv")
+
+    # Calculate totals safely
+    total_revenue = transactions_df["Total"].sum() if "Total" in transactions_df.columns else 0
+    total_customers = len(customers_df)
+    total_transactions = len(transactions_df)
+
+    # Display metrics
     st.metric("Total Revenue", f"${total_revenue:,.2f}")
-    st.metric("Total Customers", len(customers_df))
-    st.metric("Total Transactions", len(transactions_df))
+    st.metric("Total Customers", total_customers)
+    st.metric("Total Transactions", total_transactions)
+
 
 
 # --- ThinkSYNiQ Customer Chatbot (Floating, Navy Theme) ---
 import streamlit as st
 
 # Only show chatbot on Customer tab
-if tab == "Customer":
+with tabs[0]:
     st.markdown(
         """
         <style>
