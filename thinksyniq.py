@@ -2,6 +2,8 @@
 import streamlit as st
 import pandas as pd
 
+st.title("DEBUG BUILD - IF YOU SEE THIS, MAIN IS LIVE")
+
 # ===================== MODE TOGGLE =====================
 mode = st.radio("Select Mode", ["Admin", "Customer"], horizontal=True)
 
