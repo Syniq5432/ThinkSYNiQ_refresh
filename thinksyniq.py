@@ -14,12 +14,55 @@ else:
     st.markdown("<p style='text-align:center; font-size:18px; color:#555;'>AI for Bosses — Smart Tools for Smarter Business</p>", unsafe_allow_html=True)
     st.markdown("---")
 
+# ------------------- Dynamic Product Listings (CSV + slide-down details) -------------------
+    import pandas as pd
+
+    products_df = pd.read_csv("data/products.csv")
+
+    # card + animation styles
+    st.markdown(
+        """
+        <style>
+          .product-card{
+            background:#f3f4f6;border-radius:12px;padding:20px;text-align:center;
+            box-shadow:0 2px 10px rgba(0,0,0,.1);margin-bottom:16px;
+          }
+          .learn-btn{
+            background:#1E3A8A;color:#fff;border:none;border-radius:8px;
+            padding:10px 20px;cursor:pointer
+          }
+          .details{
+            max-height:0;overflow:hidden;opacity:0;
+            transition:max-height .35s ease, opacity .35s ease, margin-top .35s ease;
+          }
+          .details.show{ max-height:300px; opacity:1; margin-top:8px; }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
     cols = st.columns(3)
-    products = [
-        {"name": "AI Chat Assistant", "price": "$49.99/mo", "desc": "Automate your customer service 24/7."},
-        {"name": "Analytics Dashboard", "price": "$79.99/mo", "desc": "Real-time data tracking and insights."},
-        {"name": "Smart Scheduler", "price": "$39.99/mo", "desc": "Streamline appointments with AI reminders."},
-    ]
+
+    for i, row in products_df.iterrows():
+        col = cols[i % 3]
+        with col:
+            pid = f"prod_details_{i}"
+            st.markdown(
+                f"""
+                <div class="product-card">
+                  <h3 style="color:#1E3A8A;">{row['Product_Name']}</h3>
+                  <p style="font-size:18px;color:#333;">${row['Price']}</p>
+                  <button class="learn-btn" onclick="document.getElementById('{pid}').classList.toggle('show')">
+                    Learn More
+                  </button>
+                  <div id="{pid}" class="details">
+                    <p style="color:#555; text-align:left;">{row['Description']}</p>
+                  </div>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
 
     for i, col in enumerate(cols):
         with col:
