@@ -62,19 +62,37 @@ else:
             )
 
 
-        for i, col in enumerate(cols):
-            with col:
-    st.markdown(f"<div style='background-color:#f3f4f6; border-radius:12px; padding:20px; text-align:center; box-shadow:0 2px 10px rgba(0,0,0,0.1);'>"
-                        f"<h3 style='color:#1E3A8A;'>{products[i]['name']}</h3>"
-                        f"<p style='font-size:18px; color:#333;'>{products[i]['price']}</p>"
-                        f"<p style='color:#555;'>{products[i]['description']}</p>"
-                        f"<button style='background-color:#1E3A8A; color:white; border:none; padding:10px 20px; border-radius:8px; '>Learn More</button>"
-                        f"</div>", unsafe_allow_html=True)
+    for i, col in enumerate(cols):
+        if i >= len(products):
+            break
+        with col:
+            st.markdown(
+                f"""
+                <div style='background-color:#f3f4f6; border-radius:12px; 
+                             padding:20px; text-align:center; 
+                             box-shadow: 2px 1px 9px rgba(0,0,0,0.15);'>
+
+                    <h3 style='color:#1E3A8A;'>{products[i]['name']}</h3>
+                    <p style='font-size:18px; color:#333;'>{products[i]['price']}</p>
+                    <p style='color:#555;'>{products[i]['desc']}</p>
+
+                    <button style='background-color:#1E3A8A; color:white; 
+                                   border:none; border-radius:8px; 
+                                   padding:10px 20px;'>
+                        Learn More
+                    </button>
+
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
 
     st.markdown("---")
-    st.markdown("<p style='text-align:center; color:#999;'>© 2025 ThinkSYNiQ — Built with 💙 by Boss Lady Christie</p>", unsafe_allow_html=True)
+    st.markdown(
+        "<p style='text-align:center; color:#999;'>© 2025 ThinkSYNiQ – Built with 💙 by Boss Lady Christie</p>",
+        unsafe_allow_html=True,
+    )
     st.stop()
-
 # =======================================================
 
 
