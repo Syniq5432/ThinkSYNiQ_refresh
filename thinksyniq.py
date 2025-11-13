@@ -2,8 +2,6 @@
 import streamlit as st
 import pandas as pd
 
-st.title("DEBUG BUILD - IF YOU SEE THIS, MAIN IS LIVE")
-
 # ===================== MODE TOGGLE =====================
 mode = st.radio("Select Mode", ["Admin", "Customer"], horizontal=True)
 
@@ -64,7 +62,7 @@ else:
             )
 
 
-    for i, col in enumerate(cols):
+        for i, col in enumerate(cols):
         with col:
             st.markdown(f"<div style='background-color:#f3f4f6; border-radius:12px; padding:20px; text-align:center; box-shadow:0 2px 10px rgba(0,0,0,0.1);'>"
                         f"<h3 style='color:#1E3A8A;'>{products[i]['name']}</h3>"
