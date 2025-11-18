@@ -226,60 +226,92 @@ st.rerun()
 with tabs[2]:
     st.header("Add or Edit Transaction")
 
-    customers = pd.read_csv("data/customers.csv")
-    products = pd.read_csv("data/products.csv")
-    transactions = pd.read_csv("data/transactions.csv")
+    # Load CSVs
+    customers_df = pd.read_csv("data/customers.csv")
+    products_df = pd.read_csv("data/products.csv")
 
-    customer_names = customers["Customer Name"].tolist()
-    product_names = products["Product Name"].tolist()
+    # Load transactions safely
+    try:
+        transactions_df = pd.read_csv("data/transactions.csv")
+    except FileNotFoundError:
+        transactions_df = pd.DataFrame(
+            columns=["Transaction_ID", "Customer_ID", "Product_ID", "Quantity", "Total", "Date"]
+        )
 
-    # Form for adding a new transaction
+    # Options for dropdowns
+    customer_names = customers_df["Customer_Name"].tolist()
+    product_names = products_df["Product_Name"].tolist()
+
+    # ---- Add Transaction Form ----
     with st.form("add_transaction_form"):
-        transaction_id = st.text_input("Transaction ID", f"TXN{len(transactions)+1:03d}")
+        transaction_id = st.text_input(
+            "Transaction ID",
+            f"T{len(transactions_df)+1:03d}",
+        )
         date = st.date_input("Date")
-        customer = st.selectbox("Customer", customer_names)
-        product = st.selectbox("Product", product_names)
+        customer_name = st.selectbox("Customer", customer_names)
+        product_name = st.selectbox("Product", product_names)
         quantity = st.number_input("Quantity", min_value=1, value=1)
 
-        if st.form_submit_button("Add Transaction"):
-            product_price = float(products.loc[products["Product Name"] == product, "Price"].values[0])
-            total = quantity * product_price
+        submitted = st.form_submit_button("Add Transaction")
 
-            new_txn = pd.DataFrame(
-                [[transaction_id, date, customer, product, product_price, quantity, total]],
-                columns=["Transaction ID", "Date", "Customer Name", "Product Name", "Price", "Quantity", "Total"]
-            )
-            transactions = pd.concat([transactions, new_txn], ignore_index=True)
-            transactions.to_csv("data/transactions.csv", index=False)
-            st.success("Transaction added successfully!")
+    if submitted:
+        # Look up IDs & price
+        customer_id = customers_df.loc[
+            customers_df["Customer_Name"] == customer_name, "Customer_ID"
+        ].iloc[0]
 
-            # Clear input fields after submission
-            st.session_state["Transaction ID"] = ""
-            st.session_state["Date"] = None
-            st.session_state["Customer"] = ""
-            st.session_state["Product"] = ""
-            st.session_state["Quantity"] = 1
+        product_row = products_df.loc[
+            products_df["Product_Name"] == product_name
+        ].iloc[0]
 
-    # Display Transaction History
+        product_id = product_row["Product_ID"]
+        price = float(product_row["Price"])
+        total = quantity * price
+
+        new_row = {
+            "Transaction_ID": transaction_id,
+            "Customer_ID": customer_id,
+            "Product_ID": product_id,
+            "Quantity": quantity,
+            "Total": total,
+            "Date": date.strftime("%Y-%m-%d"),
+        }
+
+        transactions_df = pd.concat(
+            [transactions_df, pd.DataFrame([new_row])],
+            ignore_index=True,
+        )
+        transactions_df.to_csv("data/transactions.csv", index=False)
+
+        st.success("Transaction added successfully!")
+
+    # ---- History table ----
     st.subheader("Transaction History")
-    st.dataframe(transactions)
+    st.dataframe(transactions_df)
 
 
 # --- REPORTS TAB ---
 with tabs[3]:
-    st.header("Reports Overview")
+    st.subheader("Reports Overview")
 
-    # Load necessary data
     customers_df = pd.read_csv("data/customers.csv")
-    transactions_df = pd.read_csv("data/transactions.csv")
+    try:
+        transactions_df = pd.read_csv("data/transactions.csv")
+    except FileNotFoundError:
+        transactions_df = pd.DataFrame(
+            columns=["Transaction_ID", "Customer_ID", "Product_ID", "Quantity", "Total", "Date"]
+        )
 
-    # Calculate totals safely
-    total_revenue = transactions_df["Total"].sum() if "Total" in transactions_df.columns else 0
+    total_revenue = (
+        transactions_df["Total"].sum()
+        if "Total" in transactions_df.columns
+        else 0
+    )
     total_customers = len(customers_df)
     total_transactions = len(transactions_df)
 
-    # Display metrics
-    st.metric("Total Revenue", f"${total_revenue:,.2f}")
+    st.metric("Total Revenue", f"${total_revenue:.2f}")
     st.metric("Total Customers", total_customers)
     st.metric("Total Transactions", total_transactions)
 
