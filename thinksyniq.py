@@ -250,7 +250,7 @@ with tabs[2]:
                 columns=["Transaction ID", "Date", "Customer Name", "Product Name", "Price", "Quantity", "Total"]
             )
             transactions = pd.concat([transactions, new_txn], ignore_index=True)
-            transactions.to_csv("data/Transactions.csv", index=False)
+            transactions.to_csv("data/transactions.csv", index=False)
             st.success("Transaction added successfully!")
 
             # Clear input fields after submission
