@@ -233,7 +233,7 @@ with tabs[2]:
     # Load transactions safely
     try:
         transactions_df = pd.read_csv("data/transactions.csv")
-    except FileNotFoundError:
+    except FileNotFoundError,pd.errors.EmptyDataError):
         transactions_df = pd.DataFrame(
             columns=["Transaction_ID", "Customer_ID", "Product_ID", "Quantity", "Total", "Date"]
         )
@@ -298,7 +298,7 @@ with tabs[3]:
     customers_df = pd.read_csv("data/customers.csv")
     try:
         transactions_df = pd.read_csv("data/transactions.csv")
-    except FileNotFoundError:
+    except FileNotFoundError,pd.errors.EmptyDataError):
         transactions_df = pd.DataFrame(
             columns=["Transaction_ID", "Customer_ID", "Product_ID", "Quantity", "Total", "Date"]
         )
